@@ -37,7 +37,7 @@ int checkValidPass(char *ps) {
 		}
 		for(int j = 0; j < strlen(ps); j++){
 			if (isupper(ps[j])){//if have upperchar
-				upper_value++;
+				upper_value++; // <<---not repeat Uppercase
 			}
 		}
 		if(upper_value >= 2 && num_value >= 2){
