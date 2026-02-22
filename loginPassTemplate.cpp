@@ -27,7 +27,9 @@ int main() {
 }
 
 int checkValidPass(char *ps) {
-	int accepted = 0, upper_value = 0, num_value = 0;
+	int accepted = 0, upper_value = 0, num_value = 0, dub = 0;
+	char uptext[64];
+	int seen[26] = {0};
 	
 	if (strlen(ps) >= 5 && strlen(ps) <= 8 && !isdigit(ps[0])){
 		for(int i = 1; i < strlen(ps); i++){
@@ -37,14 +39,24 @@ int checkValidPass(char *ps) {
 		}
 		for(int j = 0; j < strlen(ps); j++){
 			if (isupper(ps[j])){//if have upperchar
-				upper_value++; // <<---not repeat Uppercase
+				uptext[upper_value] = ps[j];
+				upper_value++;
 			}
 		}
-		if(upper_value >= 2 && num_value >= 2){
+		for (int k = 0; uptext[k] != '\0'; k++) { // try to do "not repeat"
+	        if (uptext[k] >= 'A' && uptext[k] <= 'Z') {
+	            int index = uptext[k] - 'A';
+	            if (seen[index]) {
+	                dub = 1;
+	                break;
+	            }
+	            seen[index] = 1;
+	        }
+	    }
+		if(upper_value >= 2 && num_value >= 2 && (dub)){
 			accepted = 1;
 		}
 	}
-	
 	return accepted;
 }
 
