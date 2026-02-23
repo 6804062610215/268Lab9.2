@@ -10,8 +10,10 @@ int checkValidPass(char *ps);
 int main() {
 	char login[64], password[64];
 	
-	printf("Enter login : "); gets(login);
-	printf("Enter password : "); gets(password);
+	//printf("Enter login : "); gets(login);
+	//printf("Enter password : "); gets(password);
+	strcpy(login, "student1");
+	strcpy(password, "mTp1AAt2");	
 	
 	if(checkLogin(login, password) == 1) {
 		printf("Welcome\n");
@@ -27,9 +29,8 @@ int main() {
 }
 
 int checkValidPass(char *ps) {
-	int accepted = 0, upper_value = 0, num_value = 0, dub = 0;
-	char uptext[64];
-	int seen[26] = {0};
+	int accepted = 0, upper_value = 0, num_value = 0, repeat = 0;;
+	char uptext[64], tmp;
 	
 	if (strlen(ps) >= 5 && strlen(ps) <= 8 && !isdigit(ps[0])){
 		for(int i = 1; i < strlen(ps); i++){
@@ -39,21 +40,29 @@ int checkValidPass(char *ps) {
 		}
 		for(int j = 0; j < strlen(ps); j++){
 			if (isupper(ps[j])){//if have upperchar
-				uptext[upper_value] = ps[j];
+				uptext[upper_value] = ps[j];//keep all upperchar
 				upper_value++;
 			}
 		}
-		for (int k = 0; uptext[k] != '\0'; k++) { // try to do "not repeat"
-	        if (uptext[k] >= 'A' && uptext[k] <= 'Z') {
-	            int index = uptext[k] - 'A';
-	            if (seen[index]) {
-	                dub = 1;
-	                break;
-	            }
-	            seen[index] = 1;
-	        }
-	    }
-		if(upper_value >= 2 && num_value >= 2 && (dub)){
+		
+		//Bubble Sort
+		for(int k = 0;k < upper_value;k++){
+			for(int kk = k + 1;kk < upper_value;kk++){
+				if(uptext[k] > uptext[kk]){
+					tmp = uptext[k];
+					uptext[k] = uptext[kk];
+					uptext[kk] = tmp;
+				}
+			}
+		}
+		
+		for(int il = 0; il < upper_value; il++){
+			if(uptext[il] == uptext[il + 1]){
+				repeat = 1;
+			}
+		}
+		
+		if(upper_value >= 2 && num_value >= 2 && !(repeat)){
 			accepted = 1;
 		}
 	}
